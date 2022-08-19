@@ -14,9 +14,11 @@ This backend allows you to store users, thoughts, and reactions. A user has an a
 ## Contribution
 Made by Joe White
 
+## Walkthrough
+[Watch the walkthrough from this link](https://watch.screencastify.com/v/qYndHQoYOOAc4KgfVRQA)
+
 ## Screenshots
 ![screenshot](./assets/images/Screenshot-1.png) 
 ![screenshot](./assets/images/Screenshot-2.png) 
 ![screenshot](./assets/images/Screenshot-3.png) 
 ![screenshot](./assets/images/Screenshot-4.png) 
-[walkthrough](https://watch.screencastify.com/v/qYndHQoYOOAc4KgfVRQA)
