@@ -1,6 +1,7 @@
 const { User, Thought } = require('../models');
 
 const userController = {
+// find all users
     getAllUsers(req, res) {
         User.find({})
             .populate({
@@ -18,7 +19,7 @@ const userController = {
                 res.sendStatus(400);
             })
     },
-
+// find user by Id
     getUserById({ params }, res) {
         User.findOne({ _id: params.id })
         .populate({
@@ -36,13 +37,13 @@ const userController = {
             res.sendStatus(400);
         })
     },
-
+// create a new user
     createUser({ body }, res) {
         User.create(body)
             .then(dbUserData => res.json(dbUserData))
             .catch(err => res.json(err));
     },
-
+// update a user's details
     updateUser({ params, body }, res) {
         User.findOneAndUpdate({ _id: params.id }, body, {new: true, runValidators: true})
             .then(dbUserData => {
@@ -54,7 +55,7 @@ const userController = {
             })
             .catch(err => res.json(err));
     },
-
+// add friend to a user's friend array
     addFriend({ params }, res) {
         User.findOneAndUpdate(
             { _id: params.userId },
@@ -72,7 +73,7 @@ const userController = {
                 res.status(500).json(err);
             });
     },
-
+// remove a friend from a user's friend array
     deleteFriend({ params }, res) {
         User.findOneAndUpdate(
             { _id: params.userId },
@@ -90,7 +91,7 @@ const userController = {
                 res.status(500).json(err);
             });
     },
-
+// remove a user
     deleteUser({ params }, res) {
         User.findOneAndDelete({ _id: params.id })
             .then(dbUserData => {
@@ -98,6 +99,12 @@ const userController = {
                     res.status(404).json({ message: 'No user with this id' });
                     return;
                 }
+                // remove user from any friends array
+                User.updateMany(
+                    { _id: { $in: dbUserData.friends } },
+                    { $pull: { friends: params.id } }
+                )
+                // remove user's thoughts
                 return Thought.deleteMany({ _id: { $in: dbUserData.thoughts } });
             })
             .then(() => res.json('User and Thoughts successfully deleted!'))
